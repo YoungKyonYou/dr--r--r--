@@ -19,13 +19,13 @@ public class WebPushProducer {
 
     public void sendNotifications() {
         final List<Subscription> subscriptions = subscriptionRepository.findAll();
-        if (subscriptions.size() == 0) {
+        if (subscriptions.isEmpty()) {
             log.error("[send Notifiction Failed]");
             log.error("웹 푸시가 실패하였습니다.");
             throw new IllegalArgumentException("subscription elements is null");
         }
 
-        subscriptions.stream().forEach(subscription -> {
+        subscriptions.forEach(subscription -> {
             NotificationDto notification = NotificationDto.builder()
                     .endPoint(subscription.getEndpoint())
                     .p245dh(subscription.getP256dh())

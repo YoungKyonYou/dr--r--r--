@@ -42,7 +42,7 @@ public class EmailProducer {
     @Transactional
     public void sendRecommendationMessage() {
         final List<Member> members = memberRepository.findAll();
-        if (members.size() == 0) {
+        if (members.isEmpty()) {
             log.error("사용자를 찾을 수 없습니다.");
 
             throw MemberExceptionCode.MEMBER_NOT_FOUND.newInstance();

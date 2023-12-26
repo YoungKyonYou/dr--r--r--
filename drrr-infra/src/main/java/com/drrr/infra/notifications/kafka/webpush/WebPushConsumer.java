@@ -28,7 +28,7 @@ public class WebPushConsumer {
 
     @KafkaListener(topics = "alarm-web-push", groupId = "group_web_push", containerFactory = "kafkaWebPushListenerContainerFactory")
     public void consume(final NotificationDto notificationDto) {
-        PushService pushService = null;
+        PushService pushService;
         try {
             pushService = new PushService(publicKey, privateKey);
 

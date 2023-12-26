@@ -39,7 +39,7 @@ public class PushAlarmController {
             @ApiResponse(responseCode = "200", description = "사용자의 구독 신청 완료", content = @Content(schema = @Schema(implementation = HttpStatus.class)))
     })
     @PostMapping("/subscription")
-    public ResponseEntity<HttpStatus> addSubscription(@RequestBody final SubscriptionRequest request) throws Exception {
+    public ResponseEntity<HttpStatus> addSubscription(@RequestBody final SubscriptionRequest request) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Long memberId = Long.valueOf(authentication.getName());
         externalMemberSubscriptionService.executeSubscription(request, memberId);

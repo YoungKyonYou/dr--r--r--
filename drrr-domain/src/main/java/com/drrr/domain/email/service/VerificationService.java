@@ -43,7 +43,7 @@ public class VerificationService {
         final Email email = emailRepository.findByProviderId(providerId).orElseThrow(() -> {
             log.error("이메일 인증 정보를 찾을 수 없습니다.");
             log.error("providerId -> " + providerId);
-            throw EmailExceptionCode.EMAIL_VERIFICATION_INFORMATION_NOT_FOUND.newInstance();
+            return EmailExceptionCode.EMAIL_VERIFICATION_INFORMATION_NOT_FOUND.newInstance();
         });
 
         final Duration duration = Duration.between(email.getCreatedAt(), LocalDateTime.now());

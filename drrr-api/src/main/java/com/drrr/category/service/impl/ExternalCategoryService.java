@@ -7,6 +7,8 @@ import com.drrr.domain.category.service.CategoryService;
 import com.drrr.domain.category.service.CategoryService.CategoryDto;
 import com.drrr.domain.category.service.RedisCategoryService;
 import com.drrr.domain.jpa.entity.BaseEntity;
+
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -26,7 +28,7 @@ public class ExternalCategoryService {
      */
     public List<CategoryDto> execute() {
         return categoryService.findAllCategories().stream()
-                .sorted((o1, o2) -> o1.categoryName().compareTo(o2.categoryName())).toList();
+                .sorted(Comparator.comparing(CategoryDto::categoryName)).toList();
     }
 
     public List<CategoryDto> execute(final Long topN) {

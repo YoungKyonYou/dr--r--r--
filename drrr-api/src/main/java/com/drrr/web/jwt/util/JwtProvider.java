@@ -18,7 +18,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 @Component
 public class JwtProvider {
-    private static final String issuer = "TEAM-SAIDA-BE"; // 발급자 명칭 변경 예정
+    private static final String issuer = "DRRR-JWT-SERVICE"; // 발급자 명칭 변경 예정
     private static final Long accessTokenExpiry = 7 * 24 * 60 * 60L; // 1주
     private static final Long refreshTokenExpiry = 14 * 24 * 60 * 60L; // 2주
     private final JwtEncoder jwtEncoder;

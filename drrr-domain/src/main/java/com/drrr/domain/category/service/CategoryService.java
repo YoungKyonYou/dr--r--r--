@@ -9,6 +9,8 @@ import com.drrr.domain.category.repository.CategoryRepository;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.Comparator;
 import java.util.List;
+
+import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -45,22 +47,17 @@ public class CategoryService {
 
     public List<CategoryDto> findAllCategories() {
         final List<Category> categories = categoryRepository.findAll();
-        if (categories.isEmpty()) {
-            log.error("카테고리가 존재하지 않습니다.");
-            throw CategoryExceptionCode.CATEGORY_NOT_FOUND.newInstance();
-        }
-        return categories.stream()
-                .map(category -> CategoryDto.builder()
-                        .id(category.getId())
-                        .categoryName(category.getName())
-                        .build())
-                .sorted(Comparator.comparing(o -> o.categoryName))
-                .toList();
+        return getCategoryDtos(categories);
     }
 
     public List<CategoryDto> findSelectedCategories(final List<Long> ids) {
         final List<Category> categories = categoryRepository.findByIdIn(ids);
 
+        return getCategoryDtos(categories);
+    }
+
+    @NotNull
+    private List<CategoryDto> getCategoryDtos(List<Category> categories) {
         if (categories.isEmpty()) {
             log.error("카테고리가 존재하지 않습니다.");
             throw CategoryExceptionCode.CATEGORY_NOT_FOUND.newInstance();

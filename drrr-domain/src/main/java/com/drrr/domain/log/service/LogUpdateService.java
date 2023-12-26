@@ -61,14 +61,12 @@ public class LogUpdateService {
 
         //추천 상태를 true로 설정, 읽음 상태는 false인 이유는 추천할 때 읽지 않은 것을 기준으로 추천을 해주기 때문
         List<MemberPostLog> insertList = postIdSet.stream()
-                .map(postId -> {
-                    return MemberPostLog.builder()
-                            .postId(postId)
-                            .memberId(memberId)
-                            .isRead(false)
-                            .isRecommended(true)
-                            .build();
-                }).toList();
+                .map(postId -> MemberPostLog.builder()
+                        .postId(postId)
+                        .memberId(memberId)
+                        .isRead(false)
+                        .isRecommended(true)
+                        .build()).toList();
 
         memberPostLogRepository.saveAll(insertList);
     }

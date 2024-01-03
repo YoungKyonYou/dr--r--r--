@@ -81,7 +81,7 @@ jobs:
     name: Deploy
     runs-on: [ self-hosted, drrr-label ]
     env:
-      NAME: drrr-runner
+      NAME: youngkyonyou/drrr-github-action:latest
     # label-superman 라는 이름으로 AWS EC2 가 Runner 를 작동시킬 때 사용했던 그 label
     steps:
       - name: Login to ghcr

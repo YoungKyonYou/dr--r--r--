@@ -41,8 +41,8 @@ spring:
     #    maxQuerySizeToLog=999999: 출력할 쿼리 길이
     url: jdbc:mysql://drrr-databse.cxucsa028e73.ap-northeast-2.rds.amazonaws.com:3306/TEST_DOMAIN?profileSQL=true&logger=Slf4JLogger&useSSL=true&characterEncoding=UTF-8&serverTimezone=Asia/Seoul&maxQuerySizeToLog=999999
     driver-class-name: com.mysql.cj.jdbc.Driver
-    username: root
-    password: 1234
+    username: drrrDB
+    password: drrr-app-rds
     hikari:
       connection-timeout: 300000
   jpa:

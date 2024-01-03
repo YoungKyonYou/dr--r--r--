@@ -65,7 +65,7 @@ import org.springframework.transaction.annotation.Transactional;
  * <br>M4 - 가중치가 0인 카테고리에 대해서는 category_weight 테이블에서 삭제되는지 체크</br>
  */
 
-
+//
 @DataJpaTest(includeFilters = @ComponentScan.Filter(Service.class))
 @Import({QueryDSLConfiguration.class, DatabaseCleaner.class, JpaConfiguration.class})
 class WeightValidationServiceTest {

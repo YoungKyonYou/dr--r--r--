@@ -88,8 +88,9 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GHCR_TOKEN }}
       - name: Docker run
+        # ${{ env.NAME}} - drrr-runner
         run: |
-             docker stop drrr-runner || true && docker rm drrr-runner || true
+             docker stop ${{ env.NAME }} && docker rm ${{ env.NAME }} && docker rmi ${{ env.NAME }} 
              docker run -d -p 8081:8081 --name drrr-runner --restart always youngkyonyou/drrr-github-action:latest
              docker build -t ghcr.io/youngkyonyou/drrr-github-action:latest .
              docker push ghcr.io/youngkyonyou/drrr-github-action:latest

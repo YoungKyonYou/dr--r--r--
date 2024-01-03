@@ -43,3 +43,6 @@ dependencies {
 
 }
 
+bootJar {
+    enabled = true
+}

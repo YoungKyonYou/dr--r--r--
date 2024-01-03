@@ -26,7 +26,7 @@ public class KafkaConsumerConfig {
         this.consumerHost = consumerHost;
         this.kafkaConfig = kafkaConfig;
     }
-
+//sdf
     private <T> JsonDeserializer<T> getDeserializer(final JsonDeserializer<T> deserializer) {
         deserializer.setRemoveTypeHeaders(false);
         deserializer.addTrustedPackages("*");

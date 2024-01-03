@@ -24,7 +24,7 @@ jobs:
           submodules: recursive
           token: ${{ secrets.TOKEN }}
 
-      ## docker compose up
+      ## docker compose up (docker-compose 기반)
       - name: Build and run Docker Compose
         run: |
           docker-compose up -d
@@ -36,11 +36,61 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew clean build
 
-      - name: Build and push Docker image
+      #Docker의 Buildx는 Docker의 CLI 플러그인으로, Docker 이미지를 빌드하는데 사용
+      - name: Setup docker buildx
+        id: buildx
+        uses: docker/setup-buildx-action@v1
+
+#      #jar 파일 생성 후 docker hub에 푸시(Dockerfile 기반)
+#      - name: Build and push Docker image
+#        env:
+#          TOKEN: ${{ secrets.TOKEN_DOCKER }}
+#        run: |
+#            docker build -t youngkyonyou/drrr-github-action:latest .
+#            docker login -u youngyou1324@naver.com -p $TOKEN
+#            docker push youngkyonyou/drrr-github-action:latest
+
+      # Docker 레이어를 캐시하는 작업
+      - name: Cache docker layers
+        uses: actions/cache@v2
+        with:
+          path: /tmp/.buildx-cache
+          key: ${{ runner.os }}-buildx-${{ env.VERSION }}
+          restore-keys: |
+            ${{ runner.os }}-buildx-
+
+      # ghcr.io 로그인
+      - name: Login to ghcr
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GHCR_TOKEN }}
+
+      #jar 파일 생성 후 docker hub에 푸시(Dockerfile 기반)
+      - name: Build and push
+        id: docker_build
+        uses: docker/build-push-action@v2
         env:
           TOKEN: ${{ secrets.TOKEN_DOCKER }}
+        with:
+          builder: ${{ steps.buildx.outputs.name }}
+          push: true
+          #tags: ${{ env.DOCKER_IMAGE }}:latest로 변경할 것
+          tags: youngkyonyou/drrr-github-action:latest
+  deploy:
+    needs: build
+    name: Deploy
+    runs-on: [ self-hosted, drrr-label ]
+    # label-superman 라는 이름으로 AWS EC2 가 Runner 를 작동시킬 때 사용했던 그 label
+    steps:
+      - name: Login to ghcr
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GHCR_TOKEN }}
+      - name: Docker run
         run: |
-            docker build -t youngkyonyou/drrr-github-action:latest .
-            docker login -u youngyou1324@naver.com -p $TOKEN
-            docker push youngkyonyou/drrr-github-action:latest
-
+             docker stop ${{ env.NAME }} && docker rm ${{ env.NAME }} && docker rmi youngkyonyou/drrr-github-action:latest
+             docker run -d -p 8081:8081 --name drrr-runner --restart always youngkyonyou/drrr-github-action:latest

@@ -17,7 +17,7 @@ jobs:
         with:
           java-version: '17'
           distribution: 'adopt'
-
+      #서브모듈 업데이트
       - name: Checkout code
         uses: actions/checkout@v4
         with:
@@ -74,6 +74,7 @@ jobs:
         env:
           TOKEN: ${{ secrets.TOKEN_DOCKER }}
         with:
+          context: .
           builder: ${{ steps.buildx.outputs.name }}
           push: true
           #tags: ${{ env.DOCKER_IMAGE }}:latest로 변경할 것

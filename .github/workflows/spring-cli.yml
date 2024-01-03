@@ -80,8 +80,6 @@ jobs:
     needs: build
     name: Deploy
     runs-on: [ self-hosted, drrr-label ]
-    env:
-      NAME: youngkyonyou/drrr-github-action:latest
     # label-superman 라는 이름으로 AWS EC2 가 Runner 를 작동시킬 때 사용했던 그 label
     steps:
       - name: Login to ghcr
@@ -93,8 +91,5 @@ jobs:
       - name: Docker run
         # ${{ env.NAME}} - drrr-runner
         run: |
-             docker stop ${{ env.NAME }} && docker rm ${{ env.NAME }} && docker rmi ${{ env.NAME }} 
+             docker stop ghcr.io/youngkyonyou/drrr-github-action:latest && docker rm ghcr.io/youngkyonyou/drrr-github-action:latest && docker rmi ghcr.io/youngkyonyou/drrr-github-action:latest
              docker run -d -p 8081:8081 --name drrr-runner --restart always youngkyonyou/drrr-github-action:latest
-             cp Dockerfile /var/lib/docker/tmp/buildkit-mount133206748/Dockerfile
-             docker build -t ghcr.io/youngkyonyou/drrr-github-action:latest .
-             docker push ghcr.io/youngkyonyou/drrr-github-action:latest

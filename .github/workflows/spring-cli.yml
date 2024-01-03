@@ -91,5 +91,5 @@ jobs:
         run: |
              docker stop ${{ env.NAME }} && docker rm ${{ env.NAME }} && docker rmi youngkyonyou/drrr-github-action:latest
              docker run -d -p 8081:8081 --name drrr-runner --restart always youngkyonyou/drrr-github-action:latest
-             docker build -t ghcr.io/${{ github.actor }}/drrr-github-action:latest .
-             docker push ghcr.io/${{ github.actor }}/drrr-github-action:latest
+             docker build -t ghcr.io/youngkyonyou/drrr-github-action:latest .
+             docker push ghcr.io/youngkyonyou/drrr-github-action:latest

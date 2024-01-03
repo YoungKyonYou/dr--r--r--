@@ -123,7 +123,7 @@ services:
       #두 개의 리스너(LISTENER_DOCKER_INTERNAL, LISTENER_DOCKER_EXTERNAL)가 지정되어 있습니다.
       #내부 리스너는 Docker 컨테이너 내부의 통신을 위해 포트 19091을 사용하며,
       #외부 리스너는 호스트 IP 주소(또는 기본적으로 127.0.0.1)와 포트 9093을 사용합니다.
-      KAFKA_ADVERTISED_LISTENERS: LISTENER_DOCKER_INTERNAL://kafka1:19091,LISTENER_DOCKER_EXTERNAL://${DOCKER_HOST_IP:-127.0.0.1}:9093
+      KAFKA_ADVERTISED_LISTENERS: LISTENER_DOCKER_INTERNAL://kafka1:19091,LISTENER_DOCKER_EXTERNAL://${DOCKER_HOST_IP:-3.35.204.21}:9093
       #각 리스너에 사용할 보안 프로토콜을 설정합니다. 여기서는 두 리스너 모두 PLAINTEXT를 사용하도록 설정되어 있습니다.
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: LISTENER_DOCKER_INTERNAL:PLAINTEXT,LISTENER_DOCKER_EXTERNAL:PLAINTEXT
       #Kafka에서 사용되는 내부 토픽인 __consumer_offsets 토픽의 복제 개수를 설정합니다.

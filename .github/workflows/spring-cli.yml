@@ -73,6 +73,8 @@ jobs:
         uses: docker/build-push-action@v2
         env:
           TOKEN: ${{ secrets.TOKEN_DOCKER }}
+        run: |
+          docker login -u youngyou1324@naver.com -p $TOKEN
         with:
           context: .
           builder: ${{ steps.buildx.outputs.name }}

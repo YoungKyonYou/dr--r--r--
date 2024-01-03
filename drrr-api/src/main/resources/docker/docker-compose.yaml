@@ -10,6 +10,7 @@ networks:
 services:
   prometheus:
     image: prom/prometheus:latest
+    restart: 'always'
     container_name: prometheus
     ports:
       - "9091:9090"
@@ -22,6 +23,7 @@ services:
   #UI Server
   jaeger-service:
     image: jaegertracing/all-in-one:latest
+    restart: 'always'
     ports:
       - "16686:16686"
       - "14250"
@@ -33,6 +35,7 @@ services:
         ipv4_address: 192.19.199.101
   loki:
     image: grafana/loki:2.8.2
+    restart: 'always'
     ports:
       - "3100:3100"
     command: -config.file=/etc/loki/local-config.yaml
@@ -40,6 +43,7 @@ services:
       - monitor
   grafana:
     image: grafana/grafana:latest
+    restart: 'always'
     container_name: grafana
     user: "$UID:$GID"
     ports:
@@ -76,6 +80,7 @@ services:
   redis:
     container_name: redis
     image: redis:6.2
+    restart: 'always'
     ports:
       - "6379:6379"
     networks:
@@ -84,17 +89,18 @@ services:
       - ./conf:/usr/local/etc/redis/
       # Redis 서버를 실행할 때 사용되는 명령어입니다. 이 명령어는 Redis 서버를 구동하고 지정된 경로의 Redis 설정 파일(redis.conf)을 사용하여 구성
     command: bash -c "apt-get update && apt-get install vim -y && redis-server /usr/local/etc/redis/redis.conf"
-    restart: always
   #    deploy:
   #      resources:
   #        limits:
   #          memory: 512M
   redis-insight:
     image: redislabs/redisinsight:latest
+    restart: 'always'
     ports:
       - "8001:8001"
   zookeeper:
     image: confluentinc/cp-zookeeper
+    restart: 'always'
     networks:
       - replica
     environment:
@@ -108,6 +114,7 @@ services:
 
   kafka1:
     image: confluentinc/cp-kafka
+    restart: 'always'
     hostname: kafka1
     ports:
       - "9093:9093"
@@ -123,7 +130,7 @@ services:
       #두 개의 리스너(LISTENER_DOCKER_INTERNAL, LISTENER_DOCKER_EXTERNAL)가 지정되어 있습니다.
       #내부 리스너는 Docker 컨테이너 내부의 통신을 위해 포트 19091을 사용하며,
       #외부 리스너는 호스트 IP 주소(또는 기본적으로 127.0.0.1)와 포트 9093을 사용합니다.
-      KAFKA_ADVERTISED_LISTENERS: LISTENER_DOCKER_INTERNAL://kafka1:19091,LISTENER_DOCKER_EXTERNAL://${DOCKER_HOST_IP:-3.35.204.21}:9093
+      KAFKA_ADVERTISED_LISTENERS: LISTENER_DOCKER_INTERNAL://kafka1:19091,LISTENER_DOCKER_EXTERNAL://${DOCKER_HOST_IP:-127.0.0.1}:9093
       #각 리스너에 사용할 보안 프로토콜을 설정합니다. 여기서는 두 리스너 모두 PLAINTEXT를 사용하도록 설정되어 있습니다.
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: LISTENER_DOCKER_INTERNAL:PLAINTEXT,LISTENER_DOCKER_EXTERNAL:PLAINTEXT
       #Kafka에서 사용되는 내부 토픽인 __consumer_offsets 토픽의 복제 개수를 설정합니다.
@@ -139,7 +146,7 @@ services:
   #          memory: 512M
   kafdrop:
     image: obsidiandynamics/kafdrop
-    restart: "no"
+    restart: 'always'
     networks:
       - replica
     ports:

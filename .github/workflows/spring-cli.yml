@@ -75,7 +75,7 @@ jobs:
               docker build -t youngkyonyou/drrr-github-action:latest .
               docker login -u youngyou1324@naver.com -p $TOKEN
               docker push youngkyonyou/drrr-github-action:latest
-              docker push ghcr.io/youngkyonyou/drrr-github-action:latest
+
   deploy:
     needs: build
     name: Deploy
@@ -93,5 +93,6 @@ jobs:
         run: |
              docker stop ${{ env.NAME }} && docker rm ${{ env.NAME }} && docker rmi ${{ env.NAME }} 
              docker run -d -p 8081:8081 --name drrr-runner --restart always youngkyonyou/drrr-github-action:latest
-#             docker build -t ghcr.io/youngkyonyou/drrr-github-action:latest .
-#             docker push ghcr.io/youngkyonyou/drrr-github-action:latest
+             cp Dockerfile /var/lib/docker/tmp/buildkit-mount133206748/Dockerfile
+             docker build -t ghcr.io/youngkyonyou/drrr-github-action:latest .
+             docker push ghcr.io/youngkyonyou/drrr-github-action:latest

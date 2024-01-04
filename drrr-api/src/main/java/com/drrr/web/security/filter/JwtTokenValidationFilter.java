@@ -33,7 +33,7 @@ public class JwtTokenValidationFilter extends OncePerRequestFilter {
     private static final String TOKEN_PREFIX = "Bearer ";
     private static final String HEADER_AUTHORIZATION = "Authorization";
     private final JwtProvider jwtTokenProvider;
-    private final Set<String> IgnoreUrlsSet = new HashSet<>(List.of("/actuator/prometheus"));
+    private final Set<String> IgnoreUrlsSet = new HashSet<>(List.of("/actuator/prometheus", "/healthcheck", "/favicon.ico"));
     @Value("${api.acceptance.local.ipv4.ip}")
     private String ipv4AcceptIp;
     @Value("${api.acceptance.local.ipv6.ip}")
@@ -46,19 +46,16 @@ public class JwtTokenValidationFilter extends OncePerRequestFilter {
                                     @NotNull final FilterChain filterChain)
             throws ServletException, IOException {
 
-        if (!ipv4AcceptIp.equals(request.getRemoteAddr()) && !ipv6AcceptIp.equals(request.getRemoteAddr())
-                && !frontIp.equals(request.getRemoteAddr())) {
-            log.info("-------------------request URI: " + request.getRequestURI() + "---------------");
-            log.info("등록되지 않은 IP 요청 -> " + request.getRemoteAddr());
-            log.info("requested session id -> "+request.getRequestedSessionId());
-            throw new NotRegisteredIpException("등록되지 않은 IP 주소의 요청입니다.");
-        }
-
         //prometheus의 지표 수집을 위한 주기적인 request는 무시
-        if (IgnoreUrlsSet.contains(request.getRequestURI())) {
-            filterChain.doFilter(request, response);
-            return;
-        }
+
+//        if (!ipv4AcceptIp.equals(request.getRemoteAddr()) && !ipv6AcceptIp.equals(request.getRemoteAddr())
+//                && !frontIp.equals(request.getRemoteAddr())) {
+//            log.info("-------------------request URI: " + request.getRequestURI() + "---------------");
+//            log.info("등록되지 않은 IP 요청 -> " + request.getRemoteAddr());
+//            log.info("requested session id -> "+request.getRequestedSessionId());
+//            throw new NotRegisteredIpException("등록되지 않은 IP 주소의 요청입니다.");
+//        }
+
 
         log.info("-------------------JwtTokenValidationFilter CALL-------------------");
         log.info("-------------------request URI: " + request.getRequestURI() + "---------------");

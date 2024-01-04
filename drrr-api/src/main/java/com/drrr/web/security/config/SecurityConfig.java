@@ -67,27 +67,7 @@ public class SecurityConfig {
         final MvcRequestMatcher.Builder mvcMatcherBuilder = new MvcRequestMatcher.Builder(introspector);
 
         // 명시적으로 허용할 url 등록
-        http.authorizeHttpRequests(
-                        (auth) -> auth.requestMatchers(
-                                        mvcMatcherBuilder.pattern("/favicon.ico"),
-                                        mvcMatcherBuilder.pattern("/login/oauth/kakao/**"),
-                                        mvcMatcherBuilder.pattern("/h2-console/**"),
-                                        mvcMatcherBuilder.pattern("/swagger-ui.html"),
-                                        mvcMatcherBuilder.pattern("/swagger-ui/**"),
-                                        mvcMatcherBuilder.pattern("/swagger-resources/**"),
-                                        mvcMatcherBuilder.pattern("/v3/api-docs/**"),
-                                        mvcMatcherBuilder.pattern("/v2/api-docs"),
-                                        mvcMatcherBuilder.pattern("/webjars/**"),
-                                        mvcMatcherBuilder.pattern("/auth/**"),
-                                        mvcMatcherBuilder.pattern("/api/notifications/**"),
-                                        mvcMatcherBuilder.pattern("/actuator"),
-                                        mvcMatcherBuilder.pattern("/actuator/**"),
-                                        mvcMatcherBuilder.pattern("/actuator/prometheus"),
-                                        mvcMatcherBuilder.pattern("/api/v1/**"))
-                                .permitAll()
-                                .anyRequest()
-                                .authenticated()
-                ).httpBasic(HttpBasicConfigurer::disable)
+        http.httpBasic(HttpBasicConfigurer::disable)
                 .cors(corsConfigurer -> corsConfigurer.configurationSource(corsConfigurationSource()))
                 .csrf(AbstractHttpConfigurer::disable)
                 .addFilterBefore(jwtTokenValidationFilter(), UsernamePasswordAuthenticationFilter.class)

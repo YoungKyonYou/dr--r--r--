@@ -8,7 +8,6 @@ spring:
     allow-bean-definition-overriding: true
   data:
     redis:
-      time-to-live: 3600 # 데이터 유지 시간(sec) 1시간
       host: http://3.35.204.21
       port: 6379
   kafka:

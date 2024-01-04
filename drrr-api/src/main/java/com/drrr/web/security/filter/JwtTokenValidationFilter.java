@@ -48,7 +48,9 @@ public class JwtTokenValidationFilter extends OncePerRequestFilter {
 
         if (!ipv4AcceptIp.equals(request.getRemoteAddr()) && !ipv6AcceptIp.equals(request.getRemoteAddr())
                 && !frontIp.equals(request.getRemoteAddr())) {
+            log.info("-------------------request URI: " + request.getRequestURI() + "---------------");
             log.info("등록되지 않은 IP 요청 -> " + request.getRemoteAddr());
+            log.info("requested session id -> "+request.getRequestedSessionId());
             throw new NotRegisteredIpException("등록되지 않은 IP 주소의 요청입니다.");
         }
 

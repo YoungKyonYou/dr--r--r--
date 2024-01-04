@@ -14,6 +14,7 @@ import org.springframework.kafka.support.serializer.JsonSerializer;
 @Configuration
 public class KafkaProducerConfig {
     private final String producerHost;
+    //
 
     public KafkaProducerConfig(@Value("${spring.kafka.producer.bootstrap-servers}") final String producerHost) {
         this.producerHost = producerHost;

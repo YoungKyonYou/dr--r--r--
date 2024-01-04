@@ -1,8 +1,8 @@
-name: Spring CI
-
+name: Master branch workflow
 on:
-  pull_request:
-    branches: [ develop ]
+  push:
+    branches:
+      - master  # master 브랜치에 push가 발생하면 워크플로우 실행
 
 jobs:
   build:
@@ -41,15 +41,6 @@ jobs:
         id: buildx
         uses: docker/setup-buildx-action@v1
 
-#      #jar 파일 생성 후 docker hub에 푸시(Dockerfile 기반)
-#      - name: Build and push Docker image
-#        env:
-#          TOKEN: ${{ secrets.TOKEN_DOCKER }}
-#        run: |
-#            docker build -t youngkyonyou/drrr-github-action:latest .
-#            docker login -u youngyou1324@naver.com -p $TOKEN
-#            docker push youngkyonyou/drrr-github-action:latest
-
       # Docker 레이어를 캐시하는 작업
       - name: Cache docker layers
         uses: actions/cache@v2
@@ -59,22 +50,14 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-buildx-
 
-      # ghcr.io 로그인
-      - name: Login to ghcr
-        uses: docker/login-action@v1
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GHCR_TOKEN }}
-
       #jar 파일 생성 후 docker hub에 푸시(Dockerfile 기반)
       - name: Build and push Docker image
         env:
           TOKEN: ${{ secrets.TOKEN_DOCKER }}
         run: |
-              docker build -t youngkyonyou/drrr-github-action:latest .
+              docker build -t youngkyonyou/drrr-master:latest .
               docker login -u youngyou1324@naver.com -p $TOKEN
-              docker push youngkyonyou/drrr-github-action:latest
+              docker push youngkyonyou/drrr-master:latest
 
   deploy:
     needs: build
@@ -91,5 +74,5 @@ jobs:
       - name: Docker run
         # ${{ env.NAME}} - drrr-runner
         run: |
-             docker stop drrr-runner && docker rm drrr-runner && docker rmi -f youngkyonyou/drrr-github-action
-             docker run -d -p 8081:8081 --name drrr-runner --restart always youngkyonyou/drrr-github-action:latest
+             docker stop drrr-runner && docker rm drrr-runner && docker rmi -f youngkyonyou/drrr-master
+             docker run -d -p 8081:8081 --name drrr-runner --restart always youngkyonyou/drrr-master:latest

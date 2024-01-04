@@ -10,6 +10,7 @@ networks:
 services:
   prometheus:
     image: prom/prometheus:latest
+    restart: 'always'
     container_name: prometheus
     ports:
       - "9091:9090"
@@ -22,6 +23,7 @@ services:
   #UI Server
   jaeger-service:
     image: jaegertracing/all-in-one:latest
+    restart: 'always'
     ports:
       - "16686:16686"
       - "14250"
@@ -33,6 +35,7 @@ services:
         ipv4_address: 192.19.199.101
   loki:
     image: grafana/loki:2.8.2
+    restart: 'always'
     ports:
       - "3100:3100"
     command: -config.file=/etc/loki/local-config.yaml
@@ -40,6 +43,7 @@ services:
       - monitor
   grafana:
     image: grafana/grafana:latest
+    restart: 'always'
     container_name: grafana
     user: "$UID:$GID"
     ports:
@@ -76,6 +80,7 @@ services:
   redis:
     container_name: redis
     image: redis:6.2
+    restart: 'always'
     ports:
       - "6379:6379"
     networks:
@@ -84,17 +89,18 @@ services:
       - ./conf:/usr/local/etc/redis/
       # Redis 서버를 실행할 때 사용되는 명령어입니다. 이 명령어는 Redis 서버를 구동하고 지정된 경로의 Redis 설정 파일(redis.conf)을 사용하여 구성
     command: bash -c "apt-get update && apt-get install vim -y && redis-server /usr/local/etc/redis/redis.conf"
-    restart: always
   #    deploy:
   #      resources:
   #        limits:
   #          memory: 512M
   redis-insight:
     image: redislabs/redisinsight:latest
+    restart: 'always'
     ports:
       - "8001:8001"
   zookeeper:
     image: confluentinc/cp-zookeeper
+    restart: 'always'
     networks:
       - replica
     environment:
@@ -108,6 +114,7 @@ services:
 
   kafka1:
     image: confluentinc/cp-kafka
+    restart: 'always'
     hostname: kafka1
     ports:
       - "9093:9093"
@@ -139,7 +146,7 @@ services:
   #          memory: 512M
   kafdrop:
     image: obsidiandynamics/kafdrop
-    restart: "no"
+    restart: 'always'
     networks:
       - replica
     ports:

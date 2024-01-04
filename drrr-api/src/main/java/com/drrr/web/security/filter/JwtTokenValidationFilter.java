@@ -38,8 +38,8 @@ public class JwtTokenValidationFilter extends OncePerRequestFilter {
     private String ipv4AcceptIp;
     @Value("${api.acceptance.local.ipv6.ip}")
     private String ipv6AcceptIp;
-    @Value("${api.acceptance.front.ip}")
-    private String frontIp;
+    //@Value("${api.acceptance.front.ip}")
+    private String frontIp ="118.235.7.224";
 
     @Override
     protected void doFilterInternal(final HttpServletRequest request, @NotNull final HttpServletResponse response,

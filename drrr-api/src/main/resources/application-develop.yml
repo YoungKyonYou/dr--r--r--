@@ -9,16 +9,16 @@ spring:
   data:
     redis:
       time-to-live: 3600 # 데이터 유지 시간(sec) 1시간
-      host: 3.35.204.21
+      host: http://3.35.204.21
       port: 6379
   kafka:
     consumer:
-      bootstrap-servers: 3.35.204.21:9093
+      bootstrap-servers: http://3.35.204.21:9093
       auto-offset-reset: earliest
       enable-auto-commit: false
       auto-commit-interval: 10
     producer:
-      bootstrap-servers: 3.35.204.21:9093
+      bootstrap-servers: http://3.35.204.21:9093
     backoff:
       interval: 1000
       max_failure: 3
@@ -108,7 +108,7 @@ opentracing:
   jaeger:
     service-name: dr--r--r-- # jaeger service name
     udp-sender:
-      host: 3.35.204.21 # jaeger server ip
+      host: http://3.35.204.21 # jaeger server ip
       port: 6831           # jaeger udp port
     enabled: true
     log-spans: true
